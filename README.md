@@ -1,1 +1,1 @@
-# fonix_media_palyer
+# FONIX Media Player
