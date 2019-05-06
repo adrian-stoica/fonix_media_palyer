@@ -91,6 +91,6 @@ while True:
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
         lcd.lcd_clear()
-        lcd.lcd_display_string_pos("iRADIO",0,1)
+        lcd.lcd_display_string_pos("iRADIO",1,1)
         lcd.lcd_display_string(" Europa FM Buc", 3)
     time.sleep(0.2)
