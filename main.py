@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import division
 import RPi.GPIO as GPIO
 import subprocess
 import time
@@ -61,8 +60,8 @@ def iradio_ctrl(ictrl_file=""):
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_up_callback, 
             dec_callback=vol_down_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
-#encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_up_callback, 
-#            dec_callback=vol_down_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
+encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_up_callback, 
+            dec_callback=vol_down_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
 thread_enc_l = threading.Thread(target=encoder_l.watch)
 
