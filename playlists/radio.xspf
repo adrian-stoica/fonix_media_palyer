@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist xmlns="http://xspf.org/ns/0/" xmlns:omx="" version="1">
+	<title>Playlist</title>
+	<trackList>
+		<track>
+			<location>http://edge126.rdsnet.ro:84/profm/dancefm.mp3</location>
+			<title>Radio Dance FM 89.5</title>
+		</track>
+		<track>
+			<location>http://live.radio-impuls.ro</location>
+			<title>Radio Impuls</title>
+		</track>
+		<track>
+			<location>http://stream.radiozu.ro:8020/</location>
+			<title>Radio ZU Live</title>
+		</track>
+		<track>
+			<location>http://live.magicfm.ro:9128/magicfm.aacp</location>
+			<title>Radio Magic FM</title>
+		</track>
+		<track>
+			<location>http://stream2.srr.ro:8000/stream.mp3</location>
+			<title>Radio Romania Act</title>
+		</track>
+		<track>
+			<location>http://80.86.106.143:9128/kissfm.aacp</location>
+			<title>Radio KissFM Ro</title>
+		</track>
+		<track>
+			<location>http://live3.nationalfm.ro:8001</location>
+			<title>Radio National FM</title>
+		</track>
+		<track>
+			<location>http://astreaming.vibefm.ro:8000/vibefm_aacp48k</location>
+			<title>Radio Vibe FM</title>
+		</track>
+		<track>
+			<location>http://live.tananana.ro:8010/stream-48.aac</location>
+			<title>Radio TANANANA</title>
+		</track>
+		<track>
+			<location>http://89.43.138.116:8000/radiodoina.ogg</location>
+			<title>Radio Doina</title>
+		</track>
+		<track>
+			<location>http://edge76.rdsnet.ro:84/digifm/digifm.mp3</location>
+			<title>Radio Digi FM</title>
+		</track>
+		<track>
+			<location>http://astreaming.europafm.ro:8000/europafm_aacp48k</location>
+			<title>Radio Europa FM</title>
+		</track>
+		<track>
+			<location>http://live.guerrillaradio.ro:8010/guerrilla.aac</location>
+			<title>Radio Guerrilla</title>
+		</track>
+		<track>
+			<location>http://80.86.106.143:9128/rockfm.mp3</location>
+			<title>Radio Rock FM</title>
+		</track>
+		<track>
+			<location>http://84.247.83.36:8004/live.ogg</location>
+			<title>Sport Total FM</title>
+		</track>
+	</trackList>
+</playlist>
