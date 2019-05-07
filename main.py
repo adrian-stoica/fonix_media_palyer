@@ -64,11 +64,13 @@ def iradio_ctrl(ictrl_file=""):
    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 
     shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
+def l_test(rotvalue):
+    print(rotvalue)
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_up_callback, 
             dec_callback=vol_down_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
-encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_up_callback, 
-            dec_callback=vol_down_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
+encoder_l.setup(scale_min=0, scale_max=3, step=1, inc_callback=l_test, 
+            dec_callback=l_test, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
 thread_enc_l = threading.Thread(target=encoder_l.watch)
 
@@ -87,6 +89,7 @@ iradio_ctrl(ictrl_file)
 
 while True:
     range(10000)
+# Display the volume value
     vol_value = get_vol_value()
     if last_vol != vol_value:
         disp_state = "volume"
@@ -94,9 +97,10 @@ while True:
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
         last_vol = vol_value
         bussy_counter = int(time.time())+2
+# Back to display main screen
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("iRADIO",1,1)
         lcd.lcd_display_string(" Europa FM Buc", 3)
-    time.sleep(0.2)
+    time.sleep(0.1)
