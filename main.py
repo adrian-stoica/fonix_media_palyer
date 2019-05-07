@@ -18,7 +18,9 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+encoder_r_count = 0
 encoder_r = pyky040.Encoder(CLK=17, DT=18, SW=26)
+encoder_l_count = 0
 encoder_l = pyky040.Encoder(CLK=16, DT=20, SW=21)
 lcd = RPi_I2C_driver.lcd()
 lcd.lcd_display_string(" Loading", 2)
@@ -27,10 +29,20 @@ time.sleep(3)
 lcd.lcd_clear()
 
 def vol_up_callback(rotvalue):
-    os.system("amixer -M set 'PCM' 2%+")
+    global encoder_r_count
+    if encoder_r_count < 2:
+        encoder_r_count += 1
+    elif encoder_r_count == 2:
+        os.system("amixer -M set 'PCM' 2%+")
+        encoder_r_count = 0
 
 def vol_down_callback(rotvalue):
-    os.system("amixer -M set 'PCM' 3%-")
+    global encoder_l_count
+    if encoder_l_count < 2:
+        encoder_l_count += 1
+    elif encoder_l_count == 2:
+        os.system("amixer -M set 'PCM' 2%-")
+        encoder_l_count = 0
 
 def vol_toggle_callback():
     os.system("amixer -M set 'PCM' toggle")
@@ -43,15 +55,6 @@ def get_vol_value():
             vol_val = re.split("\[|\]", line)[1]
         elif line == "":
             return vol_val
-
-def menu_up():
-    pass
-
-def menu_down():
-    pass
-
-def menu_press():
-    pass
 
 def iradio_ctrl(ictrl_file=""):
    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 

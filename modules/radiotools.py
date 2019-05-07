@@ -1,5 +1,8 @@
 #!/usr/bin/env python
+sys.path.insert(0,'./modules')
 import xmltodict
+import RPi_I2C_driver
+import time
 
 class playListParser:
   def __init__(self, playlist, trackNo=''):
@@ -30,3 +33,10 @@ class playListParser:
       return tracklocation
     else:
       return str("The track no. is out of range")
+
+class Display:
+  def __init__(self):
+    '''
+    Class for interacting with 1604 LCD Display.
+    '''
+    self.lcd = RPi_I2C_driver.lcd()
