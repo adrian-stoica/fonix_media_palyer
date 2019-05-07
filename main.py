@@ -31,6 +31,8 @@ lcd.lcd_clear()
 def vol_up_callback(rotvalue):
     if rotvalue == 1:
         os.system("amixer -M set 'PCM' 4%+")
+    elif rotvalue == 0:
+        os.system("amixer -M set 'PCM' 4%-")
 #    global encoder_l_count
 #    global encoder_r_count
 #    if encoder_r_count < 1:
@@ -72,7 +74,7 @@ def l_test(rotvalue):
     print(rotvalue)
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_up_callback, 
-            dec_callback=vol_down_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
+            dec_callback=vol_up_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=l_test, 
             dec_callback=l_test, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
