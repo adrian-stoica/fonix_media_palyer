@@ -34,7 +34,7 @@ def vol_up_callback(rotvalue):
     if encoder_r_count < 1:
         encoder_r_count += 1
     elif encoder_r_count == 1:
-        os.system("amixer -M set 'PCM' 2%+")
+        os.system("amixer -M set 'PCM' 4%+")
         encoder_r_count = 0
         encoder_l_count = 0
 
@@ -44,7 +44,7 @@ def vol_down_callback(rotvalue):
     if encoder_l_count < 1:
         encoder_l_count += 1
     elif encoder_l_count == 1:
-        os.system("amixer -M set 'PCM' 2%-")
+        os.system("amixer -M set 'PCM' 4%-")
         encoder_l_count = 0
         encoder_r_count = 0
 
