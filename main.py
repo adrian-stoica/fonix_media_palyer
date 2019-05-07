@@ -29,20 +29,24 @@ time.sleep(3)
 lcd.lcd_clear()
 
 def vol_up_callback(rotvalue):
+    global encoder_l_count
     global encoder_r_count
     if encoder_r_count < 2:
         encoder_r_count += 1
     elif encoder_r_count == 2:
         os.system("amixer -M set 'PCM' 2%+")
         encoder_r_count = 0
+        encoder_l_count = 0
 
 def vol_down_callback(rotvalue):
     global encoder_l_count
+    global encoder_r_count
     if encoder_l_count < 2:
         encoder_l_count += 1
     elif encoder_l_count == 2:
         os.system("amixer -M set 'PCM' 2%-")
         encoder_l_count = 0
+        encoder_r_count = 0
 
 def vol_toggle_callback():
     os.system("amixer -M set 'PCM' toggle")
