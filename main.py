@@ -66,7 +66,7 @@ def menu(rotvalue):
     pass
 
 def clock():
-    clock_get = datetime.datetime.now()
+    clock_get = datetime.now()
     clock_str = str(clock_get.strftime("%I:%M"))
     return clock_str
 
