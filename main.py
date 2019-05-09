@@ -111,6 +111,7 @@ while True:
         lcd.lcd_display_string_pos(clock_var,1,8)
         clock_set = clock_var
     elif disp_state == "main" and str(clock()) != clock_set:
+        pass
 
 
     time.sleep(0.1)
