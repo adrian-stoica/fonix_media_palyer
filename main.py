@@ -83,6 +83,7 @@ thread_enc_l.start()
 last_vol = get_vol_value()
 bussy_counter = int()
 disp_state = ""
+clock_set = ""
 states = ["iRadio", "FM Radio", "MP3", "Bluetooth"]
 state = ""
 ictrl_file = "http://live.magicfm.ro:9128/magicfm.aacp"
@@ -106,5 +107,10 @@ while True:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("iRADIO",0,1)
         lcd.lcd_display_string("3. Europa FM Buc", 3)
-        lcd.lcd_display_string_pos(str(clock()),1,9)
+        clock_var = str(clock())
+        lcd.lcd_display_string_pos(clock_var,1,8)
+        clock_set = clock_var
+    elif disp_state == "main" and str(clock()) != clock_set:
+
+
     time.sleep(0.1)
