@@ -65,6 +65,11 @@ def iradio_ctrl(ictrl_file=""):
 def menu(rotvalue):
     pass
 
+def clock():
+    clock_get = datetime.datetime.now()
+    clock_str = str(clock_get.strftime("%I:%M"))
+    return clock_str
+
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
@@ -101,4 +106,5 @@ while True:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("iRADIO",1,1)
         lcd.lcd_display_string(" Europa FM Buc", 3)
+        lcd.lcd_display_string(str(clock()),4)
     time.sleep(0.1)
