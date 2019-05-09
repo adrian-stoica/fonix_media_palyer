@@ -104,13 +104,14 @@ while True:
 # Back to display main screen
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
-        clock_var = str(clock())
-        clock_set = clock_var
+        clock_set = str(clock())
         lcd.lcd_clear()
-        lcd.lcd_display_string_pos(clock_var,1,6)
+        lcd.lcd_display_string_pos(clock_set,1,6)
         lcd.lcd_display_string("3. Europa FM Buc", 3)
-        
+# Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set:
+        clock_set = str(clock())
+        lcd.lcd_display_string_pos(clock_set,1,6)
         pass
 
 
