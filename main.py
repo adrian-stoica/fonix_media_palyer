@@ -90,11 +90,11 @@ disp_state = ""
 clock_set = ""
 states = ["iRadio", "FM Radio", "MP3", "Bluetooth"]
 state = ""
-ictrl_file = "http://live.magicfm.ro:9128/magicfm.aacp"
+track_no = 2
 
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
-iradio_ctrl(plst.tlocation(0))
+iradio_ctrl(plst.tlocation(track_no))
 
 while True:
     range(10000)
@@ -112,7 +112,7 @@ while True:
         clock_set = str(clock())
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string(plst.tname(0), 3)
+        lcd.lcd_display_string(plst.tname(track_no), 3)
 # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set:
         clock_set = str(clock())
