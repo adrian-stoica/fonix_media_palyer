@@ -67,7 +67,7 @@ def menu(rotvalue):
 
 def clock():
     clock_get = datetime.now()
-    clock_str = str(clock_get.strftime("%H:%M:%S %p"))
+    clock_str = str(clock_get.strftime("%H:%M:%S"))
     return clock_str
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
@@ -106,11 +106,11 @@ while True:
         disp_state = "main"
         clock_set = str(clock())
         lcd.lcd_clear()
-        lcd.lcd_display_string_pos(clock_set,1,5)
+        lcd.lcd_display_string_pos(clock_set,1,6)
         lcd.lcd_display_string("3. Europa FM Buc", 3)
 # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set:
         clock_set = str(clock())
-        lcd.lcd_display_string_pos(clock_set,1,5)
+        lcd.lcd_display_string_pos(clock_set,1,6)
         pass
     time.sleep(0.1)
