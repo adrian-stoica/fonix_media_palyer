@@ -104,11 +104,12 @@ while True:
 # Back to display main screen
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
+        clock_var = str(clock())
+        clock_set = clock_var
         lcd.lcd_clear()
         lcd.lcd_display_string("iRADIO "+clock_var,1)
         lcd.lcd_display_string("3. Europa FM Buc", 3)
-        clock_var = str(clock())
-        clock_set = clock_var
+        
     elif disp_state == "main" and str(clock()) != clock_set:
         pass
 
