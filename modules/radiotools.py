@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-sys.path.insert(0,'./modules')
+import sys
+sys.path.insert(0,'.')
 import xmltodict
 import RPi_I2C_driver
 import time
