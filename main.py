@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import sys
-sys.path.insert(0,'modules')
+sys.path.insert(0,'/opt/fonix_media_palyer/modules')
 import RPi.GPIO as GPIO
 import subprocess
 import time
