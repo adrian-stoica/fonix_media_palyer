@@ -67,7 +67,7 @@ def menu(rotvalue):
 
 def clock():
     clock_get = datetime.now()
-    clock_str = str(clock_get.strftime("%I:%M%p"))
+    clock_str = str(clock_get.strftime("%I:%M %p"))
     return clock_str
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
@@ -107,7 +107,7 @@ while True:
         clock_var = str(clock())
         clock_set = clock_var
         lcd.lcd_clear()
-        lcd.lcd_display_string("iRADIO "+clock_var,1)
+        lcd.cd_display_string_pos(clock_var,1,6)
         lcd.lcd_display_string("3. Europa FM Buc", 3)
         
     elif disp_state == "main" and str(clock()) != clock_set:
