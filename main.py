@@ -107,7 +107,7 @@ while True:
         clock_var = str(clock())
         clock_set = clock_var
         lcd.lcd_clear()
-        lcd.cd_display_string_pos(clock_var,1,6)
+        lcd.lcd_display_string_pos(clock_var,1,6)
         lcd.lcd_display_string("3. Europa FM Buc", 3)
         
     elif disp_state == "main" and str(clock()) != clock_set:
