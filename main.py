@@ -90,7 +90,7 @@ disp_state = ""
 clock_set = ""
 states = ["iRadio", "FM Radio", "MP3", "Bluetooth"]
 state = ""
-track_no = 2
+track_no = 3
 
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
