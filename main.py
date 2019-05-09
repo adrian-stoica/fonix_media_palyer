@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+work_dir = "/opt/fonix_media_palyer/"
 import sys
-sys.path.insert(0,'/opt/fonix_media_palyer/modules')
+sys.path.insert(0, work_dir+'modules')
 import RPi.GPIO as GPIO
 import subprocess
 import time
@@ -91,7 +92,7 @@ states = ["iRadio", "FM Radio", "MP3", "Bluetooth"]
 state = ""
 ictrl_file = "http://live.magicfm.ro:9128/magicfm.aacp"
 
-plst = playListParser("playlists/radio.xspf")
+plst = playListParser(work_dir+"playlists/radio.xspf")
 
 iradio_ctrl(plst.tlocation(0))
 
