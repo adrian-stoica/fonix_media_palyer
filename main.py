@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import sys
+sys.path.insert(0,'modules')
 import RPi.GPIO as GPIO
 import subprocess
 import time
@@ -9,6 +11,7 @@ import RPi_I2C_driver
 from datetime import datetime
 import re
 import math
+from radiotools import playListParser
 
 
 GPIO.setmode(GPIO.BCM)
@@ -88,8 +91,9 @@ states = ["iRadio", "FM Radio", "MP3", "Bluetooth"]
 state = ""
 ictrl_file = "http://live.magicfm.ro:9128/magicfm.aacp"
 
+plst = playListParser("playlists/radio.xspf")
 
-iradio_ctrl(ictrl_file)
+iradio_ctrl(plst.tlocation(0))
 
 while True:
     range(10000)
@@ -107,7 +111,7 @@ while True:
         clock_set = str(clock())
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string("3. Europa FM Buc", 3)
+        lcd.lcd_display_string(plst.tname(0), 3)
 # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set:
         clock_set = str(clock())
