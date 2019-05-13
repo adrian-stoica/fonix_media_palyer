@@ -73,6 +73,12 @@ def clock():
     clock_get = datetime.now()
     clock_str = str(clock_get.strftime("%H:%M:%S"))
     return clock_str
+def state_read():
+    f = open(work_dir+"l_states")
+    mode = (f.read()).split(";")[0]
+    track = (f.read()).split(";")[1]
+    f.close()
+    return mode,track
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
@@ -88,13 +94,13 @@ last_vol = get_vol_value()
 bussy_counter = int()
 disp_state = ""
 clock_set = ""
-states = ["iRadio", "FM Radio", "MP3", "Bluetooth"]
-state = ""
-track_no = 3
+states = []
+mode, track_no = state_read()
 
 plst = playListParser(work_dir+"playlists/radio.xspf")
+p_location = plst.tlocation(track_no)
 
-iradio_ctrl(plst.tlocation(track_no))
+iradio_ctrl(p_location)
 
 while True:
     range(10000)
