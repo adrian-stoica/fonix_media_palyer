@@ -74,8 +74,6 @@ def tune_callback(rotvalue):
     elif rotvalue == 0 and track_no > 0:
         track_no -= 1
 
-        
-
 
 def clock():
     clock_get = datetime.now()
@@ -92,7 +90,7 @@ def state_read():
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
-encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
+encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=tune_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
 thread_enc_l = threading.Thread(target=encoder_l.watch)
