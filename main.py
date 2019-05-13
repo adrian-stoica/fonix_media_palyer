@@ -70,7 +70,7 @@ def iradio_ctrl(ictrl_file=""):
 def tune_callback(rotvalue):
     global track_no
     plen = plst.lenght()
-    if rotvalue == 1 and track_no < plen:
+    if rotvalue == 1 and track_no < plen-1):
         track_no += 1
     elif rotvalue == 0 and track_no > 0:
         track_no -= 1
