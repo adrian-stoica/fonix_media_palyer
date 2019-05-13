@@ -75,8 +75,9 @@ def clock():
     return clock_str
 def state_read():
     f = open(work_dir+"l_state")
-    mode = (f.read()).split(";")[0]
-    track = (f.read()).split(";")[1]
+    f_line = f.read()
+    mode = f_line.split(";")[0]
+    track = f_line.split(";")[1]
     f.close()
     return mode,track
 
