@@ -80,7 +80,9 @@ def tune_callback(rotvalue):
         track_no -= 1
     p_location = plst.tlocation(track_no)
     iradio_ctrl(p_location)
-    lcd.lcd_display_string(plst.tname(track_no), 3)
+    track_name = plst.tname(track_no)
+    lcd.lcd_display_string(track_name, 3)
+    
 
 def clock():
     clock_get = datetime.now()
@@ -131,9 +133,10 @@ while True:
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
         clock_set = str(clock())
+        track_name = plst.tname(track_no)
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string(plst.tname(track_no), 3)
+        lcd.lcd_display_string(track_name, 3)
 # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set:
         clock_set = str(clock())
