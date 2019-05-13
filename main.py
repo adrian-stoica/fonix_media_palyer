@@ -78,6 +78,8 @@ def tune_callback(rotvalue):
         track_no += 1
     elif rotvalue == 0 and track_no > 0:
         track_no -= 1
+    p_location = plst.tlocation(track_no)
+    iradio_ctrl(p_location)
 
 def clock():
     clock_get = datetime.now()
