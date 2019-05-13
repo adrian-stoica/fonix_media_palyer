@@ -71,18 +71,24 @@ def iradio_ctrl(ictrl_file=""):
     iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 
     shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
-def tune_callback(rotvalue):
-    global track_no
-    plen = plst.lenght()
-    if rotvalue == 1 and track_no < int(plen-1):
-        track_no += 1
-    elif rotvalue == 0 and track_no > 0:
-        track_no -= 1
+def display_station():
     p_location = plst.tlocation(track_no)
     iradio_ctrl(p_location)
     track_name = plst.tname(track_no)
+    lcd.lcd_clear()
+    lcd.lcd_display_string("Channel: "+str(track_no+1), 2)
     lcd.lcd_display_string(track_name, 3)
-    
+
+def tune_callback(rotvalue):
+    global track_no
+    plen = plst.lenght()
+    bussy_counter = int(time.time())+2
+    if rotvalue == 1 and track_no < int(plen-1):
+        track_no += 1
+        display_station()
+    elif rotvalue == 0 and track_no > 0:
+        track_no -= 1   
+        display_station()
 
 def clock():
     clock_get = datetime.now()
