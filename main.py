@@ -68,6 +68,7 @@ def iradio_ctrl(ictrl_file=""):
     shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 def tune_callback(rotvalue):
+    global track_no
     plen = plst.lenght()
     if rotvalue == 1 and track_no < plen:
         track_no += 1
