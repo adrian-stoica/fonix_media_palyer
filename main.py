@@ -64,17 +64,20 @@ def get_vol_value():
             return vol_val
 
 def iradio_ctrl(ictrl_file=""):
-   iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 
+    try:
+        os.popen("kill -9 $(pidof /usr/bin/omxplayer.bin)")
+    except:
+        print("nothing to do")
+    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 
     shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 def tune_callback(rotvalue):
     global track_no
     plen = plst.lenght()
-    if rotvalue == 1 and track_no < (plen-1):
+    if rotvalue == 1 and track_no < int(plen-1):
         track_no += 1
     elif rotvalue == 0 and track_no > 0:
         track_no -= 1
-
 
 def clock():
     clock_get = datetime.now()
