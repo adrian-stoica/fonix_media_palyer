@@ -25,6 +25,7 @@ GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 vol_r_count = 0
 vol_l_count = 0
 encoder_r = pyky040.Encoder(CLK=17, DT=18, SW=26)
+tune_callback_count = 0
 encoder_l = pyky040.Encoder(CLK=16, DT=20, SW=21)
 lcd = RPi_I2C_driver.lcd()
 lcd.lcd_display_string(" Loading", 2)
@@ -66,13 +67,21 @@ def iradio_ctrl(ictrl_file=""):
    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 
     shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
-def menu(rotvalue):
-    pass
+def tune_callback(rotvalue):
+    plen = plst.lenght()
+    if rotvalue == 1 and track_no < plen:
+        track_no += 1
+    elif rotvalue == 0 and track_no > 0:
+        track_no -= 1
+
+        
+
 
 def clock():
     clock_get = datetime.now()
     clock_str = str(clock_get.strftime("%H:%M:%S"))
     return clock_str
+
 def state_read():
     f = open(work_dir+"l_state")
     f_list = (f.read()).split(";")
