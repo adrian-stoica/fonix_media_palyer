@@ -75,11 +75,11 @@ def clock():
     return clock_str
 def state_read():
     f = open(work_dir+"l_state")
-    f_line = f.read()
-    mode = f_line.split(";")[0]
-    track = f_line.split(";")[1]
+    f_list = (f.read()).split(";")
+    mode = f_list[0]
+    track = f_list[1]
     f.close()
-    return mode,track
+    return mode, track
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
