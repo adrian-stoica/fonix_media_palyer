@@ -25,7 +25,8 @@ GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 vol_r_count = 0
 vol_l_count = 0
 encoder_r = pyky040.Encoder(CLK=17, DT=18, SW=26)
-tune_callback_count = 0
+tune_l_callback_count = 0
+tune_r_callback_count = 0
 encoder_l = pyky040.Encoder(CLK=16, DT=20, SW=21)
 lcd = RPi_I2C_driver.lcd()
 lcd.lcd_display_string(" Loading", 2)
@@ -81,11 +82,18 @@ def display_station():
 
 def tune_callback(rotvalue):
     global track_no
+    global tune_l_callback_count
+    global tune_r_callback_count
     plen = plst.lenght()
     bussy_counter = int(time.time())+2
     if rotvalue == 1 and track_no < int(plen-1):
-        track_no += 1
-        display_station()
+        if tune_r_callback_count < 3:
+            tune_r_callback_count += 1
+        elif tune_r_callback_count == 3:
+            track_no += 1
+            display_station()
+            tune_l_callback_count = 0
+            tune_r_callback_count = 0
     elif rotvalue == 0 and track_no > 0:
         track_no -= 1   
         display_station()
