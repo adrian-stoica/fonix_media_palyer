@@ -22,6 +22,7 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+iradio_p = ""
 vol_r_count = 0
 vol_l_count = 0
 encoder_r = pyky040.Encoder(CLK=17, DT=18, SW=26)
@@ -65,12 +66,13 @@ def get_vol_value():
             return vol_val
 
 def iradio_ctrl(ictrl_file=""):
-    try:
-        os.popen("kill -9 $(pidof /usr/bin/omxplayer.bin)")
-    except:
-        print("nothing to do")
-    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], 
-    shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    global iradio_p
+    pool = iradio_p.poll()
+    if pool == None:
+        iradio_p.stdin.write('q\n'.encode())
+        iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    else:
+        iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 def display_station():
     p_location = plst.tlocation(track_no)
@@ -95,8 +97,13 @@ def tune_callback(rotvalue):
             tune_l_callback_count = 0
             tune_r_callback_count = 0
     elif rotvalue == 0 and track_no > 0:
-        track_no -= 1   
-        display_station()
+        if tune_l_callback_count < 3:
+            tune_l_callback_count += 1
+        elif tune_l_callback_count == 3:
+            track_no -= 1
+            display_station()
+            tune_l_callback_count = 0
+            tune_r_callback_count = 0
 
 def clock():
     clock_get = datetime.now()
