@@ -72,7 +72,8 @@ def iradio_ctrl(ictrl_file=""):
     except:
         pool = ""
     if pool == None:
-        iradio_p.stdin.write('q\n'.encode())
+        iradio_p.stdin.write('q'.encode())
+        time.sleep(0.1)
         iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     else:
         iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
