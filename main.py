@@ -66,17 +66,10 @@ def get_vol_value():
             return vol_val
 
 def iradio_ctrl(ictrl_file=""):
-    global iradio_p
-    try:
-        pool = iradio_p.pool()
-    except:
-        pool = ""
-    if pool == None:
-        iradio_p.stdin.write('q'.encode())
-        time.sleep(0.1)
-        iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    else:
-        iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    bussy_counter = int(time.time())+2
+    os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
+    time.sleep(0.05)
+    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 def display_station():
     p_location = plst.tlocation(track_no)
@@ -93,17 +86,17 @@ def tune_callback(rotvalue):
     plen = plst.lenght()
     bussy_counter = int(time.time())+2
     if rotvalue == 1 and track_no < int(plen-1):
-        if tune_r_callback_count < 3:
+        if tune_r_callback_count < 2:
             tune_r_callback_count += 1
-        elif tune_r_callback_count == 3:
+        elif tune_r_callback_count == 2:
             track_no += 1
             display_station()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
     elif rotvalue == 0 and track_no > 0:
-        if tune_l_callback_count < 3:
+        if tune_l_callback_count < 2:
             tune_l_callback_count += 1
-        elif tune_l_callback_count == 3:
+        elif tune_l_callback_count == 2:
             track_no -= 1
             display_station()
             tune_l_callback_count = 0
