@@ -14,7 +14,6 @@ import re
 import math
 from radiotools import playListParser
 
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -22,11 +21,6 @@ GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-iradio_p = ""
-vol_r_count = 0
-vol_l_count = 0
-tune_l_callback_count = 0
-tune_r_callback_count = 0
 encoder_r = pyky040.Encoder(CLK=17, DT=18, SW=26)
 encoder_l = pyky040.Encoder(CLK=16, DT=20, SW=21)
 lcd = RPi_I2C_driver.lcd()
@@ -34,6 +28,12 @@ lcd.lcd_display_string(" Loading", 2)
 lcd.lcd_display_string(" Please wait...", 3)
 time.sleep(3)
 lcd.lcd_clear()
+
+iradio_p = ""
+vol_r_count = 0
+vol_l_count = 0
+tune_l_callback_count = 0
+tune_r_callback_count = 0
 
 def vol_callback(rotvalue):
     global vol_r_count
