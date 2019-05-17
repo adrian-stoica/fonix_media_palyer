@@ -66,6 +66,7 @@ def get_vol_value():
             return vol_val
 
 def iradio_ctrl(ictrl_file=""):
+    global bussy_counter
     bussy_counter = int(time.time())+2
     os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
     time.sleep(0.05)
