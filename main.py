@@ -70,7 +70,7 @@ def iradio_ctrl(ictrl_file=""):
     try:
         pool = iradio_p.pool()
     except:
-        print("No process started.")
+        pool = ""
     if pool == None:
         iradio_p.stdin.write('q\n'.encode())
         iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
