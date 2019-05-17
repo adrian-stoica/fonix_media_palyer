@@ -67,7 +67,7 @@ def get_vol_value():
 
 def iradio_ctrl(ictrl_file=""):
     global iradio_p
-    pool = iradio_p.poll()
+    pool = iradio_p.pool()
     if pool == None:
         iradio_p.stdin.write('q\n'.encode())
         iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
