@@ -160,5 +160,6 @@ while True:
     elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
         clock_set = str(clock())
         lcd.lcd_display_string_pos(clock_set,1,6)
+        lcd.lcd_display_string_pos("                    ", 2,0)
         pass
     time.sleep(0.1)
