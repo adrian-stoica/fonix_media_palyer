@@ -74,10 +74,11 @@ def iradio_ctrl(ictrl_file=""):
 
 def display_station():
     p_location = plst.tlocation(track_no)
-    iradio_ctrl(p_location)
+    plen = plst.lenght()
     track_name = plst.tname(track_no)
+    iradio_ctrl(p_location)
     lcd.lcd_clear()
-    lcd.lcd_display_string("Channel: "+str(track_no+1), 2)
+    lcd.lcd_display_string("Channel: "+str(track_no+1)+"/"+str(plen), 2)
     lcd.lcd_display_string(track_name, 3)
 
 def tune_callback(rotvalue):
@@ -160,6 +161,6 @@ while True:
     elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
         clock_set = str(clock())
         lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string_pos("                    ", 2,0)
+        lcd.lcd_display_string_pos("                   ", 2,0)
         pass
     time.sleep(0.1)
