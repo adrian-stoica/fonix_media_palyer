@@ -10,5 +10,5 @@ Audio media player based on Raspberry Pi 3B+, using OMXPlayer, 1604 i2c lcd, and
 
 * Clone this project to `/opt` folder.
 
-`$ cd /opt
-$ git clone https://github.com/adrian-stoica/fonix_media_palyer.git`
+`$ cd /opt`
+`$ git clone https://github.com/adrian-stoica/fonix_media_palyer.git`
