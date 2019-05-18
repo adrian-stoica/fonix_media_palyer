@@ -19,7 +19,7 @@ Audio media player based on Raspberry Pi 3B+, using OMXPlayer, 1604 i2c lcd, and
 
 For the moment only internet radio is working, and only with the stations declared 'playlists/radio.xspf'.
 
-###To be done
+### To be done
 
 * Web management interface;
 * Bluetooth receiver mode;
