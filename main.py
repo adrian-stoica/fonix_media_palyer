@@ -42,14 +42,14 @@ def vol_callback(rotvalue):
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
-            os.system("amixer -M set 'PCM' 4%+")
+            os.system("amixer -M set 'PCM' 2%+")
             vol_r_count = 0
             vol_l_count = 0
     elif rotvalue == 0:
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
-            os.system("amixer -M set 'PCM' 4%-")
+            os.system("amixer -M set 'PCM' 2%-")
             vol_r_count = 0
             vol_l_count = 0
 
@@ -85,6 +85,7 @@ def tune_callback(rotvalue):
     global track_no
     global tune_l_callback_count
     global tune_r_callback_count
+    global bussy_counter
     plen = plst.lenght()
     bussy_counter = int(time.time())+2
     if rotvalue == 1 and track_no < int(plen-1):
