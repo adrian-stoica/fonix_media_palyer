@@ -69,7 +69,7 @@ def iradio_ctrl(ictrl_file=""):
     global bussy_counter
     bussy_counter = int(time.time())+2
     os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
-    time.sleep(0.05)
+    time.sleep(0.03)
     iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
 def display_station():
