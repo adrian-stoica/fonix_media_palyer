@@ -38,18 +38,29 @@ tune_r_callback_count = 0
 def vol_callback(rotvalue):
     global vol_r_count
     global vol_l_count
+    global bussy_counter
     if rotvalue == 1:
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
             os.system("amixer -M set 'PCM' 2%+")
             vol_l_count = 0
+            vol_value = get_vol_value()
+            disp_state = "volume"
+            lcd.lcd_clear()
+            lcd.lcd_display_string(" Volume: "+vol_value, 3)
+            bussy_counter = int(time.time())+2
     elif rotvalue == 0:
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
             os.system("amixer -M set 'PCM' 2%-")
             vol_r_count = 0
+            vol_value = get_vol_value()
+            disp_state = "volume"
+            lcd.lcd_clear()
+            lcd.lcd_display_string(" Volume: "+vol_value, 3)
+            bussy_counter = int(time.time())+2
 
 def vol_toggle_callback():
     os.system("amixer -M set 'PCM' toggle")
@@ -130,7 +141,6 @@ thread_enc_l = threading.Thread(target=encoder_l.watch)
 thread_enc_r.start()
 thread_enc_l.start()
 
-last_vol = get_vol_value()
 bussy_counter = int()
 disp_state = ""
 clock_set = ""
@@ -142,14 +152,6 @@ iradio_ctrl()
 
 while True:
     range(10000)
-# Display the volume value
-    vol_value = get_vol_value()
-    if last_vol != vol_value:
-        disp_state = "volume"
-        lcd.lcd_clear()
-        lcd.lcd_display_string(" Volume: "+vol_value, 3)
-        last_vol = vol_value
-        bussy_counter = int(time.time())+2
 # Back to display main screen
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
