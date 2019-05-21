@@ -63,18 +63,15 @@ def get_vol_value():
         elif line == "":
             return vol_val
 
-def iradio_ctrl(ictrl_file=""):
+def iradio_ctrl():
     global bussy_counter
     bussy_counter = int(time.time())+2
     os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
     time.sleep(0.03)
-    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+ictrl_file], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-
-def display_station():
     p_location = plst.tlocation(track_no)
     plen = plst.lenght()
     track_name = plst.tname(track_no)
-    iradio_ctrl(p_location)
+    iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+p_location], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     lcd.lcd_clear()
     lcd.lcd_display_string("Channel: "+str(track_no+1)+"/"+str(plen), 2)
     lcd.lcd_display_string(track_name, 3)
@@ -92,7 +89,7 @@ def tune_callback(rotvalue):
         elif tune_r_callback_count == 2:
             track_no += 1
             state_write("iradio", track_no)
-            display_station()
+            iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
     elif rotvalue == 0 and track_no > 0:
@@ -101,7 +98,7 @@ def tune_callback(rotvalue):
         elif tune_l_callback_count == 2:
             track_no -= 1
             state_write("iradio", track_no)
-            display_station()
+            iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
 
@@ -139,11 +136,9 @@ disp_state = ""
 clock_set = ""
 states = []
 mode, track_no = state_read()
-
 plst = playListParser(work_dir+"playlists/radio.xspf")
-p_location = plst.tlocation(track_no)
 
-iradio_ctrl(p_location)
+iradio_ctrl()
 
 while True:
     range(10000)
