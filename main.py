@@ -128,7 +128,6 @@ def state_write(mode, track):
     f = open(work_dir+"l_state", "r+")
     f.write(mode+";"+str(track))
     f.close()
-    time.sleep(0.01)
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
