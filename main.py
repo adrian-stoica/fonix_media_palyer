@@ -43,7 +43,6 @@ def vol_callback(rotvalue):
             vol_r_count += 1
         elif vol_r_count == 1:
             os.system("amixer -M set 'PCM' 2%+")
-            vol_r_count = 0
             vol_l_count = 0
     elif rotvalue == 0:
         if vol_l_count < 1:
@@ -51,7 +50,6 @@ def vol_callback(rotvalue):
         elif vol_l_count == 1:
             os.system("amixer -M set 'PCM' 2%-")
             vol_r_count = 0
-            vol_l_count = 0
 
 def vol_toggle_callback():
     os.system("amixer -M set 'PCM' toggle")
