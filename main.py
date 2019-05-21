@@ -60,7 +60,7 @@ def get_vol_value():
         line = vol_val_p.stdout.readline()
         if "Mono:" in line:
             vol_val = re.split("\[|\]", line)[1]
-            mute = vol_val = re.split("\[|\]", line)[3]
+            mute = re.split("\[|\]", line)[3]
         elif line == "":
             if mute == 'off': 
                 return mute
