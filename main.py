@@ -102,6 +102,7 @@ def tune_callback(rotvalue):
             iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
+            state_write("iradio", track_no)
     elif rotvalue == 0 and track_no > 0:
         if tune_l_callback_count < 2:
             tune_l_callback_count += 1
@@ -110,6 +111,7 @@ def tune_callback(rotvalue):
             iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
+            state_write("iradio", track_no)
 
 def clock():
     clock_get = datetime.now()
@@ -158,7 +160,6 @@ while True:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(clock_set,1,6)
         lcd.lcd_display_string(track_name, 3)
-        state_write("iradio", track_no)
 # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
         clock_set = str(clock())
