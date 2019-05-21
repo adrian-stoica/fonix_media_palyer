@@ -99,19 +99,20 @@ def tune_callback(rotvalue):
             tune_r_callback_count += 1
         elif tune_r_callback_count == 2:
             track_no += 1
+            state_write("iradio", track_no)
             iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
-            state_write("iradio", track_no)
+
     elif rotvalue == 0 and track_no > 0:
         if tune_l_callback_count < 2:
             tune_l_callback_count += 1
         elif tune_l_callback_count == 2:
             track_no -= 1
+            state_write("iradio", track_no)
             iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
-            state_write("iradio", track_no)
 
 def clock():
     clock_get = datetime.now()
@@ -127,7 +128,7 @@ def state_read():
     return mode, track
 
 def state_write(mode, track):
-    f = open(work_dir+"l_state", "r+")
+    f = open(work_dir+"l_state", "w")
     f.write(mode+";"+str(track))
     f.close()
 
