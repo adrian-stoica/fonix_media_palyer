@@ -44,7 +44,7 @@ def vol_callback(rotvalue):
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
-            os.system("amixer -M set 'PCM' 2%+")
+            os.system("amixer -M set 'PCM' 4%+")
             vol_l_count = 0
             vol_value = get_vol_value()
             disp_state = "volume"
@@ -55,7 +55,7 @@ def vol_callback(rotvalue):
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
-            os.system("amixer -M set 'PCM' 2%-")
+            os.system("amixer -M set 'PCM' 4%-")
             vol_r_count = 0
             vol_value = get_vol_value()
             disp_state = "volume"
@@ -154,7 +154,7 @@ iradio_ctrl()
 
 while True:
     range(10000)
-# Back to display main screen
+    # Back to display main screen
     if bussy_counter < int(time.time()) and disp_state != "main":
         disp_state = "main"
         clock_set = str(clock())
@@ -162,7 +162,7 @@ while True:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(clock_set,1,6)
         lcd.lcd_display_string(track_name, 3)
-# Update clock on display
+    # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
         clock_set = str(clock())
         lcd.lcd_display_string_pos(clock_set,1,6)
