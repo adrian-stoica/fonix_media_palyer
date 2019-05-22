@@ -44,7 +44,7 @@ def vol_callback(rotvalue):
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
-            os.system("amixer -M set 'PCM' 4%+")
+            os.system("amixer -M set 'PCM' 6%+")
             vol_l_count = 0
             vol_value = get_vol_value()
             disp_state = "volume"
@@ -55,7 +55,7 @@ def vol_callback(rotvalue):
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
-            os.system("amixer -M set 'PCM' 4%-")
+            os.system("amixer -M set 'PCM' 6%-")
             vol_r_count = 0
             vol_value = get_vol_value()
             disp_state = "volume"
