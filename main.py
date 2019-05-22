@@ -39,6 +39,7 @@ def vol_callback(rotvalue):
     global vol_r_count
     global vol_l_count
     global bussy_counter
+    global disp_state
     if rotvalue == 1:
         if vol_r_count < 1:
             vol_r_count += 1
