@@ -119,7 +119,7 @@ def tune_callback(rotvalue):
 
 def clock():
     clock_get = datetime.now()
-    clock_str = str(clock_get.strftime("%H:%M:%S"))
+    clock_str = str(clock_get.strftime("%H:%M"))
     return clock_str
 
 def state_read():
@@ -167,6 +167,6 @@ while True:
     # Update clock on display
     elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
         clock_set = str(clock())
-        lcd.lcd_display_string_pos(clock_set,1,6)
+        lcd.lcd_display_string_pos(clock_set,1,8)
         lcd.lcd_display_string_pos("                ", 2,0)
     time.sleep(0.1)
