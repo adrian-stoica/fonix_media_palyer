@@ -40,8 +40,8 @@ def vol_callback(rotvalue):
     global vol_l_count
     global bussy_counter
     global disp_state
-    disp_state = "volume"
     if rotvalue == 1:
+        disp_state = "volume"
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
@@ -53,6 +53,7 @@ def vol_callback(rotvalue):
             lcd.lcd_display_string(" Volume: "+vol_value, 3)
             bussy_counter = int(time.time())+2
     elif rotvalue == 0:
+        disp_state = "volume"
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
