@@ -40,6 +40,7 @@ def vol_callback(rotvalue):
     global vol_l_count
     global bussy_counter
     global disp_state
+    disp_state = "volume"
     if rotvalue == 1:
         if vol_r_count < 1:
             vol_r_count += 1
@@ -47,7 +48,6 @@ def vol_callback(rotvalue):
             os.system("amixer -M set 'PCM' 6%+")
             vol_l_count = 0
             vol_value = get_vol_value()
-            disp_state = "volume"
             lcd.lcd_clear()
             time.sleep(0.05)
             lcd.lcd_display_string(" Volume: "+vol_value, 3)
@@ -59,7 +59,6 @@ def vol_callback(rotvalue):
             os.system("amixer -M set 'PCM' 6%-")
             vol_r_count = 0
             vol_value = get_vol_value()
-            disp_state = "volume"
             lcd.lcd_clear()
             time.sleep(0.05)
             lcd.lcd_display_string(" Volume: "+vol_value, 3)
@@ -168,6 +167,5 @@ while True:
     elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
         clock_set = str(clock())
         lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string_pos("                   ", 2,0)
-        pass
+        lcd.lcd_display_string_pos("                ", 2,0)
     time.sleep(0.1)
