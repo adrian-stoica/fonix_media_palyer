@@ -24,9 +24,6 @@ GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 encoder_r = pyky040.Encoder(CLK=17, DT=18, SW=26)
 encoder_l = pyky040.Encoder(CLK=16, DT=20, SW=21)
 lcd = RPi_I2C_driver.lcd()
-lcd.lcd_display_string(" Loading", 2)
-lcd.lcd_display_string(" Please wait...", 3)
-time.sleep(3)
 lcd.lcd_clear()
 
 iradio_p = ""
@@ -47,11 +44,6 @@ def vol_callback(rotvalue):
         elif vol_r_count == 1:
             os.system("amixer -M set 'PCM' 6%+")
             vol_l_count = 0
-            vol_value = get_vol_value()
-            lcd.lcd_clear()
-            time.sleep(0.05)
-            lcd.lcd_display_string(" Volume: "+vol_value, 3)
-            bussy_counter = int(time.time())+2
     elif rotvalue == 0:
         disp_state = "volume"
         if vol_l_count < 1:
@@ -59,11 +51,6 @@ def vol_callback(rotvalue):
         elif vol_l_count == 1:
             os.system("amixer -M set 'PCM' 6%-")
             vol_r_count = 0
-            vol_value = get_vol_value()
-            lcd.lcd_clear()
-            time.sleep(0.05)
-            lcd.lcd_display_string(" Volume: "+vol_value, 3)
-            bussy_counter = int(time.time())+2
 
 def vol_toggle_callback():
     os.system("amixer -M set 'PCM' toggle")
@@ -95,6 +82,7 @@ def tune_callback(rotvalue):
     global tune_l_callback_count
     global tune_r_callback_count
     global bussy_counter
+    global track_no_set
     plen = plst.lenght()
     bussy_counter = int(time.time())+2
     if rotvalue == 1 and track_no < int(plen-1):
@@ -102,6 +90,7 @@ def tune_callback(rotvalue):
             tune_r_callback_count += 1
         elif tune_r_callback_count == 2:
             track_no += 1
+            track_no_set = track_no
             state_write("iradio", track_no)
             iradio_ctrl()
             tune_l_callback_count = 0
@@ -112,6 +101,7 @@ def tune_callback(rotvalue):
             tune_l_callback_count += 1
         elif tune_l_callback_count == 2:
             track_no -= 1
+            track_no_set = track_no
             state_write("iradio", track_no)
             iradio_ctrl()
             tune_l_callback_count = 0
@@ -119,7 +109,7 @@ def tune_callback(rotvalue):
 
 def clock():
     clock_get = datetime.now()
-    clock_str = str(clock_get.strftime("%H:%M:%S"))
+    clock_str = str(clock_get.strftime("%H:%M"))
     return clock_str
 
 def state_read():
@@ -135,8 +125,29 @@ def state_write(mode, track):
     f.write(mode+";"+str(track))
     f.close()
 
-def display():
-    pass
+def main_display(display_mode):
+    global clock_set
+    global bussy_counter
+    if display_mode == "main":
+        clock_set = str(clock())
+        track_name = plst.tname(track_no)
+        lcd.lcd_clear()
+        lcd.lcd_display_string_pos(clock_set,1,7)
+        lcd.lcd_display_string_pos("CH: "+str(track_no)+"/"+str(plst.lenght()),2,0)
+        lcd.lcd_display_string_pos(track_name,3,0)
+        lcd.lcd_display_string_pos(" ",4,0)
+    elif display_mode == "tune":
+        lcd.lcd_clear()
+        lcd.lcd_display_string_pos("CH: "+str(track_no)+"/"+str(plst.lenght()),2,0)
+        lcd.lcd_display_string_pos(track_name,3,0)
+        bussy_counter = int(time.time())+2
+    elif display_mode == 'volume':
+        vol_value = get_vol_value()
+        lcd.lcd_clear()
+        time.sleep(0.05)
+        lcd.lcd_display_string(" Volume: "+vol_value, 3)
+        bussy_counter = int(time.time())+2
+
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
@@ -147,29 +158,18 @@ thread_enc_l = threading.Thread(target=encoder_l.watch)
 
 thread_enc_r.start()
 thread_enc_l.start()
-
 bussy_counter = int()
 disp_state = ""
 clock_set = ""
 states = []
 mode, track_no = state_read()
+track_no_set = track_no
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
+#start the radio with stored station
 iradio_ctrl()
+main_display("main")
 
 while True:
-    range(10000)
-    # Back to display main screen
-    if bussy_counter < int(time.time()) and disp_state != "main":
-        disp_state = "main"
-        clock_set = str(clock())
-        track_name = plst.tname(track_no)
-        lcd.lcd_clear()
-        lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string(track_name, 3)
-    # Update clock on display
-    elif disp_state == "main" and str(clock()) != clock_set and bussy_counter < int(time.time()):
-        clock_set = str(clock())
-        lcd.lcd_display_string_pos(clock_set,1,6)
-        lcd.lcd_display_string_pos("                ", 2,0)
+    pass
     time.sleep(0.1)
