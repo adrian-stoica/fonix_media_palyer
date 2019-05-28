@@ -166,8 +166,10 @@ main_display("main")
 while True:
     if stored_vol_value != get_vol_value():
         main_display('volume')
+        stored_vol_value = get_vol_value()
     elif stored_track_no != track_no:
         main_display('tune')
+        stored_track_no = track_no
     elif (stored_clock != clock()) and (bussy_counter < int(time.time())):
         main_display('main')
     elif(main_display_state == 0) and (bussy_counter < int(time.time())):
