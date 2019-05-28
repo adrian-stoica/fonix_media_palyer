@@ -171,8 +171,8 @@ while True:
     elif stored_track_no != track_no:
         main_display('tune')
         stored_track_no = track_no
-    elif (stored_clock != clock()) and (bussy_counter < int(time.time())):
+    elif stored_clock != clock() and bussy_counter < int(time.time()):
         main_display('main')
-    elif(main_display_state == 0) and (bussy_counter < int(time.time())):
+    elif main_display_state == 0 and bussy_counter < int(time.time()):
         main_display('main')
     time.sleep(0.1)
