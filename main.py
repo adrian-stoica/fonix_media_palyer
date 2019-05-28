@@ -78,23 +78,21 @@ def tune_callback(rotvalue):
     if rotvalue == 1 and track_no < int(plen-1):
         if tune_r_callback_count < 3:
             tune_r_callback_count += 1
-        elif tune_r_callback_count == 3:
+        else:
             track_no += 1
-            state_write("iradio", track_no)
-            iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
-
+            iradio_ctrl()
+            state_write("iradio", track_no)
     elif rotvalue == 0 and track_no > 0:
         if tune_l_callback_count < 3:
             tune_l_callback_count += 1
-        elif tune_l_callback_count == 3:
+        else:
             track_no -= 1
-            state_write("iradio", track_no)
-            iradio_ctrl()
             tune_l_callback_count = 0
             tune_r_callback_count = 0
-
+            iradio_ctrl()
+            state_write("iradio", track_no)
 def clock():
     clock_get = datetime.now()
     clock_str = str(clock_get.strftime("%H:%M"))
