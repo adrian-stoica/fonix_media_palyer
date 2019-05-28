@@ -134,14 +134,10 @@ plst = playListParser(work_dir+"playlists/radio.xspf")
 iradio_ctrl()
 
 while True:
-    time.sleep(0.001)
     if  stored_clock != str(clock()):
         track_name = plst.tname(track_no)
         main_display_state = 1
-        lcd.lcd_clear()
         lcd.lcd_display_string_pos(stored_clock,1,7)
-        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),3,0)
-        lcd.lcd_display_string_pos(track_name,4,0)
         stored_clock = str(clock())
     if stored_track_no != track_no:
         track_name = plst.tname(track_no)
@@ -165,3 +161,4 @@ while True:
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos(track_name,3,0)
         stored_clock = str(clock())
+    time.sleep(0.1)
