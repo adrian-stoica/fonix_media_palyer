@@ -120,6 +120,7 @@ def main_display(display_mode):
     if display_mode == "main":
         stored_clock = str(clock())
         track_name = plst.tname(track_no)
+        main_display_state = 1
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
@@ -130,12 +131,14 @@ def main_display(display_mode):
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
         lcd.lcd_display_string_pos(track_name,3,0)
         bussy_counter = int(time.time())+2
+        main_display_state = 0
     elif display_mode == 'volume':
         vol_value = get_vol_value()
         lcd.lcd_clear()
         time.sleep(0.05)
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
         bussy_counter = int(time.time())+2
+        main_display_state = 0
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
@@ -153,6 +156,7 @@ states = []
 mode, track_no = state_read()
 stored_track_no = track_no
 stored_vol_value = get_vol_value()
+main_display_state = 1
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
 #start the radio with stored station
@@ -166,6 +170,6 @@ while True:
         main_display('tune')
     elif (stored_clock != clock()) and (bussy_counter < int(time.time())):
         main_display('main')
-    elif bussy_counter < int(time.time()):
+    elif(main_display_state == 0) and (bussy_counter < int(time.time())):
         main_display('main')
     time.sleep(0.1)
