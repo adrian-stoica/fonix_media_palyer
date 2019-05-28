@@ -37,14 +37,12 @@ def vol_callback(rotvalue):
     global vol_l_count
     global disp_state
     if rotvalue == 1:
-        disp_state = "volume"
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
             os.system("amixer -M set 'PCM' 4%+")
             vol_l_count = 0
     elif rotvalue == 0:
-        disp_state = "volume"
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
@@ -76,18 +74,18 @@ def tune_callback(rotvalue):
     global tune_r_callback_count
     plen = plst.lenght()
     if rotvalue == 1 and track_no < int(plen-1):
-        if tune_r_callback_count < 3:
+        if tune_r_callback_count < 4:
             tune_r_callback_count += 1
-        else:
-            track_no += 1
+        elif tune_r_callback_count == 4:
             tune_l_callback_count = 0
             tune_r_callback_count = 0
+            track_no += 1
             iradio_ctrl()
             state_write("iradio", track_no)
     elif rotvalue == 0 and track_no > 0:
-        if tune_l_callback_count < 3:
+        if tune_l_callback_count < 4:
             tune_l_callback_count += 1
-        else:
+        elif tune_l_callback_count == 4:
             track_no -= 1
             tune_l_callback_count = 0
             tune_r_callback_count = 0
@@ -112,9 +110,9 @@ def state_write(mode, track):
     f.close()
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
-            dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
+            dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=500)
 encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=tune_callback, 
-            dec_callback=tune_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
+            dec_callback=tune_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=500)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
 thread_enc_l = threading.Thread(target=encoder_l.watch)
 
