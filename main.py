@@ -176,4 +176,4 @@ while True:
         main_display('main')
     elif main_display_state == 0 and bussy_counter < actual_time:
         main_display('main')
-    time.sleep(0.01)
+    time.sleep(0.001)
