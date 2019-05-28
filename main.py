@@ -76,9 +76,9 @@ def tune_callback(rotvalue):
     global tune_r_callback_count
     plen = plst.lenght()
     if rotvalue == 1 and track_no < int(plen-1):
-        if tune_r_callback_count < 2:
+        if tune_r_callback_count < 3:
             tune_r_callback_count += 1
-        elif tune_r_callback_count == 2:
+        elif tune_r_callback_count == 3:
             track_no += 1
             state_write("iradio", track_no)
             iradio_ctrl()
@@ -86,9 +86,9 @@ def tune_callback(rotvalue):
             tune_r_callback_count = 0
 
     elif rotvalue == 0 and track_no > 0:
-        if tune_l_callback_count < 2:
+        if tune_l_callback_count < 3:
             tune_l_callback_count += 1
-        elif tune_l_callback_count == 2:
+        elif tune_l_callback_count == 3:
             track_no -= 1
             state_write("iradio", track_no)
             iradio_ctrl()
