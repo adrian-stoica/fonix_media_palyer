@@ -129,12 +129,11 @@ states = []
 mode, track_no = state_read()
 stored_track_no = track_no
 stored_vol_value = get_vol_value()
-main_display_state = 1
+main_display_state = 0
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
 #start the radio with stored station
 iradio_ctrl()
-main_display("main")
 
 while True:
     time.sleep(0.001)
