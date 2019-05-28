@@ -117,6 +117,7 @@ def state_write(mode, track):
 def main_display(display_mode):
     global stored_clock
     global bussy_counter
+    global display_mode
     if display_mode == "main":
         stored_clock = str(clock())
         track_name = plst.tname(track_no)
@@ -153,6 +154,7 @@ states = []
 mode, track_no = state_read()
 stored_track_no = track_no
 stored_vol_value = get_vol_value()
+display_mode = "main"
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
 #start the radio with stored station
