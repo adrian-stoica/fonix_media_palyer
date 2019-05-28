@@ -35,7 +35,6 @@ tune_r_callback_count = 0
 def vol_callback(rotvalue):
     global vol_r_count
     global vol_l_count
-    global bussy_counter
     global disp_state
     if rotvalue == 1:
         disp_state = "volume"
@@ -65,32 +64,23 @@ def get_vol_value():
             return vol_val
 
 def iradio_ctrl():
-    global bussy_counter
-    bussy_counter = int(time.time())+2
     os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
     time.sleep(0.03)
     p_location = plst.tlocation(track_no)
     plen = plst.lenght()
     track_name = plst.tname(track_no)
     iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+p_location], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    lcd.lcd_clear()
-    lcd.lcd_display_string("Channel: "+str(track_no+1)+"/"+str(plen), 2)
-    lcd.lcd_display_string(track_name, 3)
 
 def tune_callback(rotvalue):
     global track_no
     global tune_l_callback_count
     global tune_r_callback_count
-    global bussy_counter
-    global track_no_set
     plen = plst.lenght()
-    bussy_counter = int(time.time())+2
     if rotvalue == 1 and track_no < int(plen-1):
         if tune_r_callback_count < 2:
             tune_r_callback_count += 1
         elif tune_r_callback_count == 2:
             track_no += 1
-            track_no_set = track_no
             state_write("iradio", track_no)
             iradio_ctrl()
             tune_l_callback_count = 0
@@ -101,7 +91,6 @@ def tune_callback(rotvalue):
             tune_l_callback_count += 1
         elif tune_l_callback_count == 2:
             track_no -= 1
-            track_no_set = track_no
             state_write("iradio", track_no)
             iradio_ctrl()
             tune_l_callback_count = 0
@@ -126,19 +115,19 @@ def state_write(mode, track):
     f.close()
 
 def main_display(display_mode):
-    global clock_set
+    global stored_clock
     global bussy_counter
     if display_mode == "main":
-        clock_set = str(clock())
+        stored_clock = str(clock())
         track_name = plst.tname(track_no)
         lcd.lcd_clear()
-        lcd.lcd_display_string_pos(clock_set,1,7)
-        lcd.lcd_display_string_pos("CH: "+str(track_no)+"/"+str(plst.lenght()),2,0)
+        lcd.lcd_display_string_pos(stored_clock,1,7)
+        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
         lcd.lcd_display_string_pos(track_name,3,0)
         lcd.lcd_display_string_pos(" ",4,0)
     elif display_mode == "tune":
         lcd.lcd_clear()
-        lcd.lcd_display_string_pos("CH: "+str(track_no)+"/"+str(plst.lenght()),2,0)
+        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
         lcd.lcd_display_string_pos(track_name,3,0)
         bussy_counter = int(time.time())+2
     elif display_mode == 'volume':
@@ -147,7 +136,6 @@ def main_display(display_mode):
         time.sleep(0.05)
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
         bussy_counter = int(time.time())+2
-
 
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
@@ -160,10 +148,11 @@ thread_enc_r.start()
 thread_enc_l.start()
 bussy_counter = int()
 disp_state = ""
-clock_set = ""
+stored_clock = clock()
 states = []
 mode, track_no = state_read()
-track_no_set = track_no
+stored_track_no = track_no
+stored_vol_value = get_vol_value()
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
 #start the radio with stored station
@@ -171,5 +160,12 @@ iradio_ctrl()
 main_display("main")
 
 while True:
-    pass
+    if stored_vol_value != get_vol_value():
+        main_display('volume')
+    elif stored_track_no != track_no:
+        main_display('tune')
+    elif (stored_clock != clock()) and (bussy_counter < int(time.time())):
+        main_display('main')
+    elif (display_mode != 'main') and  (bussy_counter < int(time.time())):
+        main_display('main')
     time.sleep(0.1)
