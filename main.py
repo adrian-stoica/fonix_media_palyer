@@ -65,7 +65,6 @@ def get_vol_value():
 
 def iradio_ctrl():
     os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
-    time.sleep(0.03)
     p_location = plst.tlocation(track_no)
     plen = plst.lenght()
     track_name = plst.tname(track_no)
@@ -136,7 +135,6 @@ def main_display(display_mode):
     elif display_mode == 'volume':
         vol_value = get_vol_value()
         lcd.lcd_clear()
-        time.sleep(0.05)
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
         bussy_counter = int(time.time())+2
         main_display_state = 0
