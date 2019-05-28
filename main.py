@@ -41,14 +41,14 @@ def vol_callback(rotvalue):
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
-            os.system("amixer -M set 'PCM' 6%+")
+            os.system("amixer -M set 'PCM' 4%+")
             vol_l_count = 0
     elif rotvalue == 0:
         disp_state = "volume"
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
-            os.system("amixer -M set 'PCM' 6%-")
+            os.system("amixer -M set 'PCM' 4%-")
             vol_r_count = 0
 
 def vol_toggle_callback():
@@ -144,9 +144,8 @@ while True:
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),3,0)
         lcd.lcd_display_string_pos(track_name,4,0)
-        #lcd.lcd_display_string_pos(" ",4,0)
         stored_clock = str(clock())
-    elif stored_track_no != track_no:
+    if stored_track_no != track_no:
         track_name = plst.tname(track_no)
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
@@ -154,19 +153,17 @@ while True:
         bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_track_no = track_no
-    elif stored_vol_value != get_vol_value():
+    if stored_vol_value != get_vol_value():
         vol_value = get_vol_value()
         lcd.lcd_clear()
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
         bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_vol_value = vol_value
-    elif main_display_state == 0 and bussy_counter < int(time.time()):
+    if main_display_state == 0 and bussy_counter < int(time.time()):
         track_name = plst.tname(track_no)
         main_display_state = 1
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(stored_clock,1,7)
-        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),3,0)
-        lcd.lcd_display_string_pos(track_name,4,0)
-        #lcd.lcd_display_string_pos(" ",4,0)
+        lcd.lcd_display_string_pos(track_name,3,0)
         stored_clock = str(clock())
