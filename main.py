@@ -136,14 +136,12 @@ while True:
         lcd.lcd_display_string_pos(stored_clock,1,7)
         stored_clock = str(clock())
     if stored_track_no != track_no:
-        track_name = plst.tname(track_no)
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
-        lcd.lcd_display_string_pos(track_name,3,0)
+        lcd.lcd_display_string_pos(str(plst.tname(track_no)),3,0)
         bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_track_no = track_no
-        state_write("iradio", track_no)
     if stored_vol_value != get_vol_value():
         vol_value = get_vol_value()
         lcd.lcd_clear()
@@ -158,4 +156,5 @@ while True:
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos(track_name,3,0)
         stored_clock = str(clock())
+        state_write("iradio", track_no)
     time.sleep(0.1)
