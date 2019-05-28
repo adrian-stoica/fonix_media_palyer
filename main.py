@@ -113,32 +113,6 @@ def state_write(mode, track):
     f.write(mode+";"+str(track))
     f.close()
 
-def main_display(display_mode):
-    global stored_clock
-    global bussy_counter
-    if display_mode == "main":
-        stored_clock = str(clock())
-        track_name = plst.tname(track_no)
-        main_display_state = 1
-        lcd.lcd_clear()
-        lcd.lcd_display_string_pos(stored_clock,1,7)
-        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),3,0)
-        lcd.lcd_display_string_pos(track_name,4,0)
-        #lcd.lcd_display_string_pos(" ",4,0)
-    elif display_mode == "tune":
-        track_name = plst.tname(track_no)
-        lcd.lcd_clear()
-        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
-        lcd.lcd_display_string_pos(track_name,3,0)
-        bussy_counter = int(time.time())+2
-        main_display_state = 0
-    elif display_mode == 'volume':
-        vol_value = get_vol_value()
-        lcd.lcd_clear()
-        lcd.lcd_display_string(" Volume: "+vol_value, 3)
-        bussy_counter = int(time.time())+2
-        main_display_state = 0
-
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=300)
 encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=tune_callback, 
@@ -164,15 +138,36 @@ main_display("main")
 
 while True:
     time.sleep(0.001)
-    actual_time = int(time.time())
-    if stored_vol_value != get_vol_value():
-        stored_vol_value = get_vol_value()
-        main_display(stored_vol_value)
+    if  stored_clock != str(clock()):
+        track_name = plst.tname(track_no)
+        main_display_state = 1
+        lcd.lcd_clear()
+        lcd.lcd_display_string_pos(stored_clock,1,7)
+        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),3,0)
+        lcd.lcd_display_string_pos(track_name,4,0)
+        #lcd.lcd_display_string_pos(" ",4,0)
+        stored_clock = str(clock())
     elif stored_track_no != track_no:
+        track_name = plst.tname(track_no)
+        lcd.lcd_clear()
+        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
+        lcd.lcd_display_string_pos(track_name,3,0)
+        bussy_counter = int(time.time())+2
+        main_display_state = 0
         stored_track_no = track_no
-        main_display(stored_track_no)
-        stored_track_no = track_no
-    elif stored_clock != clock() and bussy_counter < actual_time:
-        main_display('main')
-    elif main_display_state == 0 and bussy_counter < actual_time:
-        main_display('main')
+    elif stored_vol_value != get_vol_value():
+        vol_value = get_vol_value()
+        lcd.lcd_clear()
+        lcd.lcd_display_string(" Volume: "+vol_value, 3)
+        bussy_counter = int(time.time())+2
+        main_display_state = 0
+        stored_vol_value = vol_value
+    elif main_display_state == 0 and bussy_counter < int(time.time()):
+        track_name = plst.tname(track_no)
+        main_display_state = 1
+        lcd.lcd_clear()
+        lcd.lcd_display_string_pos(stored_clock,1,7)
+        lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),3,0)
+        lcd.lcd_display_string_pos(track_name,4,0)
+        #lcd.lcd_display_string_pos(" ",4,0)
+        stored_clock = str(clock())
