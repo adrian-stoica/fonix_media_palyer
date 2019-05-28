@@ -127,6 +127,7 @@ def main_display(display_mode):
         lcd.lcd_display_string_pos(track_name,4,0)
         #lcd.lcd_display_string_pos(" ",4,0)
     elif display_mode == "tune":
+        track_name = plst.tname(track_no)
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
         lcd.lcd_display_string_pos(track_name,3,0)
