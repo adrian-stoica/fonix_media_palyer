@@ -32,6 +32,7 @@ vol_l_count = 0
 tune_l_callback_count = 0
 tune_r_callback_count = 0
 
+#Define the functions that are going to be used in the main loop
 def vol_callback(rotvalue):
     global vol_r_count
     global vol_l_count
@@ -40,13 +41,13 @@ def vol_callback(rotvalue):
         if vol_r_count < 1:
             vol_r_count += 1
         elif vol_r_count == 1:
-            os.system("amixer -M set 'PCM' 4%+")
+            os.system("amixer -M set 'PCM' 2%+")
             vol_l_count = 0
     elif rotvalue == 0:
         if vol_l_count < 1:
             vol_l_count += 1
         elif vol_l_count == 1:
-            os.system("amixer -M set 'PCM' 4%-")
+            os.system("amixer -M set 'PCM' 2%-")
             vol_r_count = 0
 
 def vol_toggle_callback():
@@ -108,7 +109,7 @@ def state_write(mode, track):
     f = open(work_dir+"l_state", "w")
     f.write(mode+";"+str(track))
     f.close()
-
+#Start rotary encoders threads
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
             dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=500)
 encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=tune_callback, 
@@ -126,17 +127,22 @@ mode, track_no = state_read()
 stored_track_no = track_no
 stored_vol_value = get_vol_value()
 main_display_state = 0
+mute = int()
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
 #start the radio with stored station
 iradio_ctrl()
 
+#The main loop
+
 while True:
+    #Update clock on display
     if  stored_clock != str(clock()):
         track_name = plst.tname(track_no)
         main_display_state = 1
         stored_clock = str(clock())
         lcd.lcd_display_string_pos(stored_clock,1,7)
+    #Show stations selection on display
     if stored_track_no != track_no:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
@@ -144,6 +150,7 @@ while True:
         bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_track_no = track_no
+    #Display volume change
     if stored_vol_value != get_vol_value():
         vol_value = get_vol_value()
         lcd.lcd_clear()
@@ -151,6 +158,7 @@ while True:
         bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_vol_value = vol_value
+    #Display the main screen
     if main_display_state == 0 and bussy_counter < int(time.time()):
         track_name = plst.tname(track_no)
         main_display_state = 1
@@ -159,4 +167,14 @@ while True:
         lcd.lcd_display_string_pos(track_name,3,0)
         stored_clock = str(clock())
         state_write("iradio", track_no)
+    if stored_vol_value == '0%' and mute != 1:
+        lcd.lcd_display_string_pos("MUTE",4,17)
+        mute = 1
+    elif stored_vol_value != '0%' and mute == 1:
+        lcd.lcd_display_string_pos("    ",4,17)
+        mute = 0
+
+
     time.sleep(0.1)
+
+#End of the main loop
