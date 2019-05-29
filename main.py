@@ -81,6 +81,7 @@ def tune_callback(rotvalue):
             tune_r_callback_count = 0
             track_no += 1
             iradio_ctrl()
+            time.sleep(0.1)
     elif rotvalue == 0 and track_no > 0:
         if tune_l_callback_count < 4:
             tune_l_callback_count += 1
@@ -89,6 +90,7 @@ def tune_callback(rotvalue):
             tune_l_callback_count = 0
             tune_r_callback_count = 0
             iradio_ctrl()
+            time.sleep(0.1)
 def clock():
     clock_get = datetime.now()
     clock_str = str(clock_get.strftime("%H:%M"))
@@ -133,8 +135,8 @@ while True:
     if  stored_clock != str(clock()):
         track_name = plst.tname(track_no)
         main_display_state = 1
-        lcd.lcd_display_string_pos(stored_clock,1,7)
         stored_clock = str(clock())
+        lcd.lcd_display_string_pos(stored_clock,1,7)
     if stored_track_no != track_no:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
