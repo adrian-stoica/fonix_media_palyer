@@ -153,16 +153,16 @@ while True:
     #Display volume change
     if stored_vol_value != get_vol_value():
         bussy_counter = int(time.time())+2
-        vol_value = get_vol_value()
         lcd.lcd_clear()
+        vol_value = get_vol_value()
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
         main_display_state = 0
         stored_vol_value = vol_value
     #Display the main screen
     if main_display_state == 0 and bussy_counter < int(time.time()):
         track_name = plst.tname(track_no)
-        main_display_state = 1
         lcd.lcd_clear()
+        main_display_state = 1
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos(track_name,3,0)
         if stored_vol_value == '0%':
