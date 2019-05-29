@@ -127,7 +127,6 @@ mode, track_no = state_read()
 stored_track_no = track_no
 stored_vol_value = get_vol_value()
 main_display_state = 0
-mute = int()
 plst = playListParser(work_dir+"playlists/radio.xspf")
 
 #start the radio with stored station
@@ -165,15 +164,12 @@ while True:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos(track_name,3,0)
+        if stored_vol_value == '0%' and mute != 1:
+            lcd.lcd_display_string_pos("MUTE",4,16)
+        elif stored_vol_value != '0%' and mute == 1:
+            lcd.lcd_display_string_pos("    ",4,16)
         stored_clock = str(clock())
         state_write("iradio", track_no)
-    if stored_vol_value == '0%' and mute != 1:
-        lcd.lcd_display_string_pos("MUTE",4,17)
-        mute = 1
-    elif stored_vol_value != '0%' and mute == 1:
-        lcd.lcd_display_string_pos("    ",4,17)
-        mute = 0
-
 
     time.sleep(0.1)
 
