@@ -164,9 +164,9 @@ while True:
         lcd.lcd_clear()
         lcd.lcd_display_string_pos(stored_clock,1,7)
         lcd.lcd_display_string_pos(track_name,3,0)
-        if stored_vol_value == '0%' and mute != 1:
+        if stored_vol_value == '0%':
             lcd.lcd_display_string_pos("MUTE",4,16)
-        elif stored_vol_value != '0%' and mute == 1:
+        elif stored_vol_value != '0%':
             lcd.lcd_display_string_pos("    ",4,16)
         stored_clock = str(clock())
         state_write("iradio", track_no)
