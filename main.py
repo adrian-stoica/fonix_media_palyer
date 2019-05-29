@@ -92,6 +92,7 @@ def tune_callback(rotvalue):
             tune_r_callback_count = 0
             iradio_ctrl()
             time.sleep(0.1)
+
 def clock():
     clock_get = datetime.now()
     clock_str = str(clock_get.strftime("%H:%M"))
@@ -136,25 +137,25 @@ iradio_ctrl()
 
 while True:
     #Update clock on display
-    if  stored_clock != str(clock()):
+    if  stored_clock != str(clock()) and bussy_counter < int(time.time()):
         track_name = plst.tname(track_no)
         main_display_state = 1
         stored_clock = str(clock())
         lcd.lcd_display_string_pos(stored_clock,1,7)
     #Show stations selection on display
     if stored_track_no != track_no:
+        bussy_counter = int(time.time())+2
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
         lcd.lcd_display_string_pos(str(plst.tname(track_no)),3,0)
-        bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_track_no = track_no
     #Display volume change
     if stored_vol_value != get_vol_value():
+        bussy_counter = int(time.time())+2
         vol_value = get_vol_value()
         lcd.lcd_clear()
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
-        bussy_counter = int(time.time())+2
         main_display_state = 0
         stored_vol_value = vol_value
     #Display the main screen
