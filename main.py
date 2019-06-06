@@ -134,17 +134,15 @@ plst = playListParser(work_dir+"playlists/radio.xspf")
 iradio_ctrl()
 
 #The main loop
-
 while True:
     #Update clock on display
     if  stored_clock != str(clock()) and bussy_counter < int(time.time()):
         track_name = plst.tname(track_no)
-        main_display_state = 1
         stored_clock = str(clock())
         lcd.lcd_display_string_pos(stored_clock,1,7)
     #Show stations selection on display
     if stored_track_no != track_no:
-        bussy_counter = int(time.time())+2
+        bussy_counter = int(time.time())+3
         lcd.lcd_clear()
         lcd.lcd_display_string_pos("Channel: "+str(track_no+1)+"/"+str(plst.lenght()),2,0)
         lcd.lcd_display_string_pos(str(plst.tname(track_no)),3,0)
@@ -152,7 +150,7 @@ while True:
         stored_track_no = track_no
     #Display volume change
     if stored_vol_value != get_vol_value():
-        bussy_counter = int(time.time())+2
+        bussy_counter = int(time.time())+3
         lcd.lcd_clear()
         vol_value = get_vol_value()
         lcd.lcd_display_string(" Volume: "+vol_value, 3)
@@ -171,7 +169,5 @@ while True:
             lcd.lcd_display_string_pos("    ",4,16)
         stored_clock = str(clock())
         state_write("iradio", track_no)
-
     time.sleep(0.1)
-
 #End of the main loop
