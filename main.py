@@ -13,6 +13,7 @@ from datetime import datetime
 import re
 import math
 from radiotools import playListParser
+from multiprocessing import Pool
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -31,6 +32,7 @@ vol_r_count = 0
 vol_l_count = 0
 tune_l_callback_count = 0
 tune_r_callback_count = 0
+not_connected_count = 0
 
 #Define the functions that are going to be used in the main loop
 def vol_callback(rotvalue):
@@ -63,11 +65,23 @@ def get_vol_value():
             return vol_val
 
 def iradio_ctrl():
+    global iradio_p
+    global not_connected_count
     os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
     p_location = plst.tlocation(track_no)
     plen = plst.lenght()
     track_name = plst.tname(track_no)
     iradio_p = subprocess.Popen(["omxplayer --adev alsa --vol -300 "+p_location], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    not_connected_count = 0
+
+def iradio_check():
+    global not_connected_count
+    if iradio_p.poll() != None:
+        not_connected_count += 1
+    if not_connected_count >= 5:
+        iradio_ctrl()
+        not_connected_count = 0
+    time.sleep(0.2)
 
 def tune_callback(rotvalue):
     global track_no
@@ -117,9 +131,11 @@ encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=tune_callback,
             dec_callback=tune_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=500)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
 thread_enc_l = threading.Thread(target=encoder_l.watch)
+radio_reconnect = threading.Thread(target=iradio_check)
 
 thread_enc_r.start()
 thread_enc_l.start()
+radio_reconnect.start()
 bussy_counter = int()
 disp_state = ""
 stored_clock = clock()
