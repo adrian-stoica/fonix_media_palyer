@@ -27,7 +27,7 @@ encoder_l = pyky040.Encoder(CLK=16, DT=20, SW=21)
 lcd = RPi_I2C_driver.lcd()
 lcd.lcd_clear()
 
-iradio_p = ""
+iradio_p = None
 vol_r_count = 0
 vol_l_count = 0
 tune_l_callback_count = 0
@@ -35,6 +35,7 @@ tune_r_callback_count = 0
 not_connected_count = 0
 
 #Define the functions that are going to be used in the main loop
+
 def vol_callback(rotvalue):
     global vol_r_count
     global vol_l_count
@@ -76,7 +77,7 @@ def iradio_ctrl():
 
 def iradio_check():
     global not_connected_count
-    if iradio_p.poll() != None:
+    if bool(os.system('pidof /usr/bin/omxplayer.bin')) == True:
         not_connected_count += 1
     if not_connected_count >= 5:
         iradio_ctrl()
