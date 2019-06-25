@@ -77,12 +77,13 @@ def iradio_ctrl():
 
 def iradio_check():
     global not_connected_count
-    if bool(os.system('pidof /usr/bin/omxplayer.bin')) == True:
-        not_connected_count += 1
-    if not_connected_count >= 5:
-        iradio_ctrl()
-        not_connected_count = 0
-    time.sleep(0.2)
+    while True:
+        if os.system('pidof /usr/bin/omxplayer.bin'):
+            not_connected_count += 1
+        if not_connected_count >= 5:
+            iradio_ctrl()
+            not_connected_count = 0
+        time.sleep(0.2)
 
 def tune_callback(rotvalue):
     global track_no
