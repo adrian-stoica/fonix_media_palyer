@@ -80,7 +80,7 @@ def iradio_check():
     while True:
         if os.system('pidof /usr/bin/omxplayer.bin'):
             not_connected_count += 1
-        if not_connected_count >= 3:
+        if not_connected_count >= 5:
             iradio_ctrl()
             not_connected_count = 0
         time.sleep(0.1)
