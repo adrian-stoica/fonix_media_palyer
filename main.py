@@ -128,9 +128,9 @@ def state_write(mode, track):
     f.close()
 #Start rotary encoders threads
 encoder_r.setup(scale_min=0, scale_max=1, step=1, inc_callback=vol_callback, 
-            dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=500)
+            dec_callback=vol_callback, sw_callback=vol_toggle_callback, polling_interval=2000, sw_debounce_time=500)
 encoder_l.setup(scale_min=0, scale_max=1, step=1, inc_callback=tune_callback, 
-            dec_callback=tune_callback, sw_callback=vol_toggle_callback, polling_interval=1000, sw_debounce_time=500)
+            dec_callback=tune_callback, sw_callback=vol_toggle_callback, polling_interval=2000, sw_debounce_time=500)
 thread_enc_r = threading.Thread(target=encoder_r.watch)
 thread_enc_l = threading.Thread(target=encoder_l.watch)
 radio_reconnect = threading.Thread(target=iradio_check)
@@ -187,5 +187,5 @@ while True:
             lcd.lcd_display_string_pos("    ",4,16)
         stored_clock = str(clock())
         state_write("iradio", track_no)
-    time.sleep(0.1)
+    time.sleep(0.05)
 #End of the main loop
