@@ -13,7 +13,6 @@ from datetime import datetime
 import re
 import math
 from radiotools import playListParser
-from multiprocessing import Pool
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -68,7 +67,8 @@ def get_vol_value():
 def iradio_ctrl():
     global iradio_p
     global not_connected_count
-    os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
+    if not os.system('pidof /usr/bin/omxplayer.bin'):
+        os.system("kill -9 $(pidof /usr/bin/omxplayer.bin) > /dev/null 2>&1")
     p_location = plst.tlocation(track_no)
     plen = plst.lenght()
     track_name = plst.tname(track_no)
@@ -80,7 +80,7 @@ def iradio_check():
     while True:
         if os.system('pidof /usr/bin/omxplayer.bin'):
             not_connected_count += 1
-        if not_connected_count >= 5:
+        if not_connected_count >= 10:
             iradio_ctrl()
             not_connected_count = 0
         time.sleep(0.1)
